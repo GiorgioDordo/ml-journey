@@ -1,3 +1,5 @@
+import json
+
 class Library:
   def __init__(self, booksList):
     self.booksList = booksList
@@ -23,6 +25,21 @@ class Library:
       print(f"'{book.title}' is available in the library.")
     else:
       print(f"'{book.title}' is not available in the library.")
+
+  def save_data(self, book, filename='library_data.json'):
+    data = {
+      "books": [
+        {
+          "title": book.title,
+          "author": book.author,
+          "isbn": book.isbn
+        }
+        for book in self.booksList
+      ]
+    }
+    with open(filename, 'w') as file:
+      json.dump(data, file, indent=4)
+    print(f"Library data has been saved to '{filename}'.")
   
 
 class Book:
@@ -44,9 +61,9 @@ class Book:
 
 book1 = Book("The Great Gatsby", "F. Scott Fitzgerald", "978-0743273565")
 book2 = Book("To Kill a Mockingbird", "Harper Lee", "978-0061120084")
-
-library = Library([book1, book2])
-library.display_books()
-library.remove_book(book1)
-library.display_books()
-library.search_book(book1)
+library = Library([])
+library.add_book(book1)
+library.save_data(book1)
+# library.remove_book(book1)
+# library.display_books()
+# library.search_book(book1)
